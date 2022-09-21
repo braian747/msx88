@@ -1,0 +1,73 @@
+
+								página: 1 
+
+ Listado Fuente: p1e7-4.LST
+ Programa Fuente en: p1e7-4.ASM
+ Fecha: Sat Aug 27 22:50:23 2022
+
+  Dir. Codigo maquina	 Linea 	 Codigo en lenguaje ensamble
+
+			      1	;  Multiplicación de números sin signo, llamando
+				 a una subrutina MUL, pasando los parámetros NUM
+				1 Y NUM2 por valor, y RES por referencia a travé
+				s de la pila.
+			      2		ORG 1000H
+ 1000 05 00		      3	NUM1 	DW 5H
+ 1002 03 00		      4	NUM2 	DW 3H
+ 1004 03 00		      5	RES 	DW ?
+			      6	
+			      7		; Subrutina MUL
+			      8		ORG 3000H
+ 3000 53		      9	MUL:	PUSH BX
+ 3001 8B DC		     10		MOV BX, SP
+ 3003 51		     11		PUSH CX
+ 3004 50		     12		PUSH AX
+ 3005 52		     13		PUSH DX
+ 3006 81 C3 06 00	     14		ADD BX, 6
+ 300A 8B 0F		     15		MOV CX, [BX]
+ 300C 81 C3 02 00	     16		ADD BX, 2
+ 3010 8B 07		     17		MOV AX, [BX]
+ 3012 03 D0		     18	SUMA:	ADD DX, AX
+ 3014 FF C9		     19		DEC CX
+ 3016 75 FA		     20		JNZ SUMA
+ 3018 81 EB 04 00	     21		SUB BX, 4
+ 301C 8B 07		     22		MOV AX, [BX]
+ 301E 8B D8		     23		MOV BX, AX
+ 3020 89 17		     24		MOV [BX], DX
+ 3022 5A		     25		POP DX
+ 3023 58		     26		POP AX
+ 3024 59		     27		POP CX
+ 3025 5B		     28		POP BX
+ 3026 C3		     29		RET
+			     30	
+			     31		; Programa principal
+			     32		ORG 2000H
+ 2000 8B 06 00 10	     33		MOV AX, NUM1
+ 2004 50		     34		PUSH AX
+ 2005 8B 06 02 10	     35		MOV AX, NUM2
+ 2009 50		     36		PUSH AX
+ 200A B8 04 10		     37		MOV AX, OFFSET RES
+ 200D 50		     38		PUSH AX
+ 200E BA 00 00		     39		MOV DX, 0
+ 2011 E8 00 30		     40		CALL MUL
+ 2014 58		     41		POP AX
+ 2015 58		     42		POP AX
+ 2016 58		     43	 	POP AX
+ 2017 F4		     44	 	HLT
+			     45		END
+
+
+ S I M B O L O S:
+
+ Nombre:	Tipo:		Valor:
+
+ NUM1    	Mem. Word	1000h
+
+
+
+								página: 2 
+
+ NUM2    	Mem. Word	1002h
+ RES     	Mem. Word	1004h
+ MUL     	Etiqueta	3000h
+ SUMA    	Etiqueta	3012h

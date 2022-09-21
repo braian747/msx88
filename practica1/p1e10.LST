@@ -1,0 +1,77 @@
+
+								página: 1 
+
+ Listado Fuente: p1e10.LST
+ Programa Fuente en: p1e10.ASM
+ Fecha: Thu Sep 15 13:41:33 2022
+
+  Dir. Codigo maquina	 Linea 	 Codigo en lenguaje ensamble
+
+			      1		ORG 1000H
+ 1000 34 12		      2		NUM1 DW 1234H
+ 1002 78 56		      3		NUM2 DW 5678H
+			      4	
+			      5		ORG 3000H
+ 3000 53		      6	SWAP:	PUSH BX	;Preservo los registros
+ 3001 50		      7		PUSH AX
+ 3002 51		      8		PUSH CX
+ 3003 52		      9		PUSH DX
+			     10	;OBTENER VALOR DE NUM2 EN AX
+ 3004 8B DC		     11		MOV BX, SP ;"Reinicio" BX en el tope de
+				 la pila para buscar el dato 
+ 3006 81 C3 0A 00	     12		ADD BX,10 ;apunto a la DIRECCION de NUM
+				2
+ 300A 8B 1F		     13		MOV BX,[BX] ;BX=DIRECCION de num2
+ 300C 8B 07		     14		MOV AX,[BX] ;AX=VALOR DE NUM2
+			     15	;OBTENER VALOR DE NUM2 EN AX
+ 300E 8B DC		     16		MOV BX, SP ;"Reinicio" BX en el tope de
+				 la pila para buscar el dato 
+ 3010 81 C3 0C 00	     17		ADD BX, 12 ;apunto a la DIRECCION de NU
+				M1	
+ 3014 8B 1F		     18		MOV BX,[BX] ;BX=DIRECCION de num1
+ 3016 8B 0F		     19		MOV CX,[BX] ;CX=VALOR DE NUM1
+ 3018 33 C1		     20		XOR AX,CX ;Procedimiento para intercamb
+				iar los valores
+ 301A 33 C8		     21		XOR CX,AX
+ 301C 33 C1		     22		XOR AX,CX
+			     23	;GUARDO EL NUEVO VALOR DE CX EN NUM1
+ 301E 8B DC		     24		MOV BX,SP
+ 3020 81 C3 0C 00	     25		ADD BX,12
+ 3024 8B 1F		     26		MOV BX,[BX]
+ 3026 89 0F		     27		MOV [BX],CX
+			     28	;GUARDO EL NUEVO VALOR DE AX EN NUM2
+ 3028 8B DC		     29		MOV BX,SP
+ 302A 81 C3 0A 00	     30		ADD BX,10
+ 302E 8B 1F		     31		MOV BX,[BX]
+ 3030 89 07		     32		MOV [BX],AX
+			     33	
+ 3032 5A		     34		POP DX ;restauro los registros
+ 3033 59		     35		POP CX
+ 3034 58		     36		POP AX
+ 3035 5B		     37		POP BX
+ 3036 C3		     38		RET
+			     39	
+			     40		ORG 2000H
+ 2000 B8 00 10		     41		MOV AX, OFFSET NUM1
+ 2003 50		     42		PUSH AX
+ 2004 B8 02 10		     43		MOV AX, OFFSET NUM2
+ 2007 50		     44		PUSH AX
+ 2008 E8 00 30		     45		CALL SWAP
+ 200B 58		     46		POP AX
+ 200C 58		     47		POP AX
+ 200D F4		     48		HLT
+			     49		END
+
+
+
+
+								página: 2 
+
+
+ S I M B O L O S:
+
+ Nombre:	Tipo:		Valor:
+
+ NUM1    	Mem. Word	1000h
+ NUM2    	Mem. Word	1002h
+ SWAP    	Etiqueta	3000h

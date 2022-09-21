@@ -1,0 +1,26 @@
+
+								página: 1 
+
+ Listado Fuente: swap.LST
+ Programa Fuente en: swap.ASM
+ Fecha: Sun Aug 28 00:58:03 2022
+
+  Dir. Codigo maquina	 Linea 	 Codigo en lenguaje ensamble
+
+			      1	;intercambia los valores (8 bits) de los registr
+				os AL y BL, al finalizar
+			      2	;el programa AL=54 Y BL=10	
+			      3	
+			      4		ORG 2000H
+ 2000 B0 0A		      5	MOV AL, 10
+ 2002 B3 36		      6	MOV BL, 54
+ 2004 32 C3		      7	XOR AL,BL
+ 2006 32 D8		      8	XOR BL,AL
+ 2008 32 C3		      9	XOR AL,BL
+ 200A F4		     10	HLT 
+			     11	END
+
+
+ S I M B O L O S:
+
+ Nombre:	Tipo:		Valor:

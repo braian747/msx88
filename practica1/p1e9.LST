@@ -1,0 +1,41 @@
+
+								página: 1 
+
+ Listado Fuente: p1e9.LST
+ Programa Fuente en: p1e9.ASM
+ Fecha: Thu Sep 15 16:23:23 2022
+
+  Dir. Codigo maquina	 Linea 	 Codigo en lenguaje ensamble
+
+			      1		ORG 1000H
+ 1000 43 41 44 45 4E 41	      2	CAD	DB "CADENA"
+ 1006 00		      3		DB 00H
+ 1007 00 41		      4	RES	DW ?
+			      5	
+			      6		ORG 3000H
+ 3000 B9 00 00		      7	CONCAR:	MOV CX, 0
+ 3003 8B D8		      8		MOV BX,AX
+ 3005 80 3F 00		      9	LAZO:	CMP BYTE PTR [BX],00H
+ 3008 74 07		     10		JZ FIN
+ 300A FF C1		     11		INC CX
+ 300C FF C3		     12		INC BX
+ 300E E9 05 30		     13		JMP LAZO
+ 3011 C3		     14	FIN:	RET
+			     15	
+			     16		ORG 2000H
+ 2000 B8 00 10		     17		MOV AX, OFFSET CAD
+ 2003 E8 00 30		     18		CALL CONCAR
+ 2006 89 0E 07 10	     19		MOV RES,CX
+ 200A F4		     20		HLT
+			     21		END
+
+
+ S I M B O L O S:
+
+ Nombre:	Tipo:		Valor:
+
+ CAD     	Mem. Byte	1000h
+ RES     	Mem. Word	1007h
+ CONCAR  	Etiqueta	3000h
+ LAZO    	Etiqueta	3005h
+ FIN     	Etiqueta	3011h

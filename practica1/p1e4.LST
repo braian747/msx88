@@ -1,0 +1,29 @@
+
+								página: 1 
+
+ Listado Fuente: p1e4.LST
+ Programa Fuente en: p1e4.ASM
+ Fecha: Thu Aug 25 16:34:17 2022
+
+  Dir. Codigo maquina	 Linea 	 Codigo en lenguaje ensamble
+
+			      1		ORG 2000H ; se omite la declaracion de 
+				variables en memoria y la carga de los mismos 
+			      2			  ; en los registros ya que se 
+				cargan desde el msx88 
+ 2000 3A C3		      3		CMP AL,BL
+ 2002 78 05		      4		JS THEN
+ 2004 8A CB		      5	ELSE:	MOV CL,BL
+ 2006 E9 0B 20		      6		JMP FIN
+ 2009 8A C8		      7	THEN:	MOV CL,AL
+ 200B F4		      8	FIN:	HLT
+			      9		END
+
+
+ S I M B O L O S:
+
+ Nombre:	Tipo:		Valor:
+
+ ELSE    	Etiqueta	2004h	No usado
+ THEN    	Etiqueta	2009h
+ FIN     	Etiqueta	200Bh

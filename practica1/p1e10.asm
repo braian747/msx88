@@ -1,0 +1,49 @@
+	ORG 1000H
+	NUM1 DW 1234H
+	NUM2 DW 5678H
+
+	ORG 3000H
+SWAP:	PUSH BX	;Preservo los registros
+	PUSH AX
+	PUSH CX
+	PUSH DX
+;OBTENER VALOR DE NUM2 EN AX
+	MOV BX, SP ;"Reinicio" BX en el tope de la pila para buscar el dato 
+	ADD BX,10 ;apunto a la DIRECCION de NUM2
+	MOV BX,[BX] ;BX=DIRECCION de num2
+	MOV AX,[BX] ;AX=VALOR DE NUM2
+;OBTENER VALOR DE NUM2 EN AX
+	MOV BX, SP ;"Reinicio" BX en el tope de la pila para buscar el dato 
+	ADD BX, 12 ;apunto a la DIRECCION de NUM1	
+	MOV BX,[BX] ;BX=DIRECCION de num1
+	MOV CX,[BX] ;CX=VALOR DE NUM1
+	XOR AX,CX ;Procedimiento para intercambiar los valores
+	XOR CX,AX
+	XOR AX,CX
+;GUARDO EL NUEVO VALOR DE CX EN NUM1
+	MOV BX,SP
+	ADD BX,12
+	MOV BX,[BX]
+	MOV [BX],CX
+;GUARDO EL NUEVO VALOR DE AX EN NUM2
+	MOV BX,SP
+	ADD BX,10
+	MOV BX,[BX]
+	MOV [BX],AX
+
+	POP DX ;restauro los registros
+	POP CX
+	POP AX
+	POP BX
+	RET
+
+	ORG 2000H
+	MOV AX, OFFSET NUM1
+	PUSH AX
+	MOV AX, OFFSET NUM2
+	PUSH AX
+	CALL SWAP
+	POP AX
+	POP AX
+	HLT
+	END

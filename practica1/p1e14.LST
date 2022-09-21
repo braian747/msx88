@@ -1,0 +1,73 @@
+
+								página: 1 
+
+ Listado Fuente: p1e14.LST
+ Programa Fuente en: p1e14.ASM
+ Fecha: Sat Sep 17 14:46:23 2022
+
+  Dir. Codigo maquina	 Linea 	 Codigo en lenguaje ensamble
+
+			      1		ORG 1000H
+ 1000 41 42 45 43 45 44	      2	CAD	DB "ABECEDARIO"
+ 1006 41 52 49 4F
+ 100A 41		      3	FIN_CAD	DB ?
+ 100B 41		      4	CANT	DB ?
+			      5		
+			      6		ORG 3000H
+ 3000 B4 FF		      7	ES_VOCAL:MOV AH, 0FFH
+ 3002 80 F8 41		      8		CMP AL, 41H ;A
+ 3005 74 16		      9		JZ FIN
+ 3007 80 F8 45		     10		CMP AL,45H ;E
+ 300A 74 11		     11		JZ FIN
+ 300C 80 F8 49		     12		CMP AL,49H ;I
+ 300F 74 0C		     13		JZ FIN
+ 3011 80 F8 4F		     14		CMP AL,4FH ;O
+ 3014 74 07		     15		JZ FIN 
+ 3016 80 F8 55		     16		CMP AL,55H ;U
+ 3019 74 02		     17		JZ FIN
+ 301B B4 00		     18		MOV AH,00H
+ 301D C3		     19	FIN:	RET
+			     20	
+			     21		ORG 4000H
+ 4000 B1 0A		     22	VOCALES:MOV CL, OFFSET FIN_CAD-OFFSET CAD
+ 4002 B5 00		     23		MOV CH,0 ;CH=CANT DE VOCALES
+ 4004 80 F9 00		     24	LAZO:	CMP CL,0 ;CL=CANT DE CARACTERES DE LA C
+				ADENA
+ 4007 74 13		     25		JZ TERMINA
+ 4009 8A 07		     26		MOV AL,[BX]
+ 400B E8 00 30		     27		CALL ES_VOCAL
+ 400E 80 FC 00		     28		CMP AH, 00H ;AH= FFH SI ES VOCAL, 00H S
+				I NO ES VOCAL
+ 4011 74 02		     29		JZ SIG
+ 4013 FE C5		     30		INC CH
+ 4015 FF C3		     31	SIG:	INC BX
+ 4017 FE C9		     32		DEC CL
+ 4019 E9 04 40		     33		JMP LAZO
+ 401C C3		     34	TERMINA:RET
+			     35	
+			     36		ORG 2000H
+ 2000 BB 00 10		     37		MOV BX, OFFSET CAD
+ 2003 E8 00 40		     38		CALL VOCALES
+ 2006 88 2E 0B 10	     39		MOV CANT, CH
+ 200A F4		     40		HLT
+			     41		END
+
+
+ S I M B O L O S:
+
+ Nombre:	Tipo:		Valor:
+
+ CAD     	Mem. Byte	1000h
+ FIN_CAD 	Mem. Byte	100Ah
+ CANT    	Mem. Byte	100Bh
+ ES_VOCAL	Etiqueta	3000h
+ FIN     	Etiqueta	301Dh
+
+
+
+								página: 2 
+
+ VOCALES 	Etiqueta	4000h
+ LAZO    	Etiqueta	4004h
+ SIG     	Etiqueta	4015h
+ TERMINA 	Etiqueta	401Ch

@@ -1,0 +1,30 @@
+
+								página: 1 
+
+ Listado Fuente: p1e8.LST
+ Programa Fuente en: p1e8.ASM
+ Fecha: Thu Sep 15 16:22:54 2022
+
+  Dir. Codigo maquina	 Linea 	 Codigo en lenguaje ensamble
+
+			      1		ORG 1000H
+ 1000 27		      2		B DB 27H ; (00100111) en binario
+			      3	
+			      4		ORG 3000H
+ 3000 02 E4		      5	ROTARIZ:ADD AH, AH
+ 3002 80 D4 00		      6		ADC AH, 0
+ 3005 C3		      7		RET
+			      8	
+			      9		ORG 2000H
+ 2000 8A 26 00 10	     10		MOV AH, B ; AH = 00100111
+ 2004 E8 00 30		     11		CALL ROTARIZ ; AH = 01001110
+ 2007 F4		     12		HLT
+			     13		END
+
+
+ S I M B O L O S:
+
+ Nombre:	Tipo:		Valor:
+
+ B       	Mem. Byte	1000h
+ ROTARIZ 	Etiqueta	3000h

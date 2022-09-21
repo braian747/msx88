@@ -1,0 +1,46 @@
+
+								página: 1 
+
+ Listado Fuente: p1e7-3.LST
+ Programa Fuente en: p1e7-3.ASM
+ Fecha: Sat Aug 27 19:55:02 2022
+
+  Dir. Codigo maquina	 Linea 	 Codigo en lenguaje ensamble
+
+			      1	;  Multiplicación de números sin signo, llamando
+				 a una subrutina MUL, pasando
+			      2	;  los parámetros por referencia desde el progra
+				ma principal a través de registros
+			      3		ORG 1000H
+ 1000 05		      4	NUM1 	DB 5H
+ 1001 03		      5	NUM2 	DB 3H
+			      6	
+			      7		ORG 3000H ; Subrutina MUL: recibe la re
+				ferencia de los parametros en AX y CX, y devuelv
+				e el resultado en DX
+ 3000 8B D8		      8	MUL: 	MOV BX, AX 
+ 3002 03 17		      9		ADD DX, [BX]
+ 3004 52		     10		PUSH DX 
+ 3005 8B D9		     11		MOV BX, CX 
+ 3007 8B 17		     12		MOV DX, [BX] 
+ 3009 FF CA		     13		DEC DX 
+ 300B 89 17		     14		MOV [BX], DX
+ 300D 5A		     15		POP DX
+ 300E 75 F0		     16		JNZ MUL
+ 3010 C3		     17		RET
+			     18		ORG 2000H ; Programa principal
+ 2000 B8 00 10		     19		MOV AX, OFFSET NUM1
+ 2003 B9 01 10		     20	  	MOV CX, OFFSET NUM2
+ 2006 BA 00 00		     21		MOV DX, 0
+ 2009 E8 00 30		     22		CALL MUL
+ 200C F4		     23		HLT
+			     24		END
+
+
+ S I M B O L O S:
+
+ Nombre:	Tipo:		Valor:
+
+ NUM1    	Mem. Byte	1000h
+ NUM2    	Mem. Byte	1001h
+ MUL     	Etiqueta	3000h

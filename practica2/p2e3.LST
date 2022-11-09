@@ -1,0 +1,42 @@
+
+								página: 1 
+
+ Listado Fuente: p2e3.LST
+ Programa Fuente en: p2e3.ASM
+ Fecha: Sat Sep 17 17:22:41 2022
+
+  Dir. Codigo maquina	 Linea 	 Codigo en lenguaje ensamble
+
+			      1		ORG 1000H
+ 1000 41		      2	LETRA	DB 41H			;41H=LETRA A MA
+				YUSCULA
+			      3		
+			      4		ORG 2000H
+ 2000 B0 01		      5		MOV AL,1
+ 2002 BB 00 10		      6	LAZO:	MOV BX,OFFSET LETRA
+ 2005 CD 07		      7		INT 7 			;IMPRIMIR LETRA
+				 MAYUSCULA
+ 2007 80 06 00 10 20	      8		ADD LETRA, 20H 		;AVANZA
+				R A LA LETRA MINUSCULA
+ 200C BB 00 10		      9		MOV BX, OFFSET LETRA
+ 200F CD 07		     10		INT 7 			;IMPRIMIR LETRA
+				 MINUSCULA
+ 2011 80 2E 00 10 20	     11		SUB LETRA,20H		;VOLVER A LA LE
+				TRA MAYUSCULA
+ 2016 FE 06 00 10	     12		INC LETRA 		;PASAR A LA SIG
+				UIENTE LETRA
+ 201A 80 3E 00 10 5B	     13		CMP LETRA,5BH 		;5AH=Z --> 5BH=
+				CARACTER SIGUIENTE A LA Z (NO IMPRIMIR)
+ 201F 74 03		     14		JZ FIN
+ 2021 E9 02 20		     15		JMP LAZO
+ 2024 F4		     16	FIN:	HLT
+			     17		END
+
+
+ S I M B O L O S:
+
+ Nombre:	Tipo:		Valor:
+
+ LETRA   	Mem. Byte	1000h
+ LAZO    	Etiqueta	2002h
+ FIN     	Etiqueta	2024h

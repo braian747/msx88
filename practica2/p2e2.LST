@@ -1,0 +1,32 @@
+
+								página: 1 
+
+ Listado Fuente: p2e2.LST
+ Programa Fuente en: p2e2.ASM
+ Fecha: Sat Sep 17 16:48:29 2022
+
+  Dir. Codigo maquina	 Linea 	 Codigo en lenguaje ensamble
+
+			      1		ORG 1000H
+ 1000 01		      2	CAR	DB 01H
+			      3		
+			      4		ORG 2000H
+ 2000 B0 01		      5		MOV AL,1
+ 2002 BB 00 10		      6	LAZO:	MOV BX,OFFSET CAR
+ 2005 CD 07		      7		INT 7
+ 2007 FE 06 00 10	      8		INC CAR
+ 200B 80 3E 00 10 FF	      9		CMP CAR,0FFH
+ 2010 74 03		     10		JZ FIN
+ 2012 E9 02 20		     11		JMP LAZO
+ 2015 CD 07		     12	FIN:	INT 7
+ 2017 F4		     13		HLT
+			     14		END
+
+
+ S I M B O L O S:
+
+ Nombre:	Tipo:		Valor:
+
+ CAR     	Mem. Byte	1000h
+ LAZO    	Etiqueta	2002h
+ FIN     	Etiqueta	2015h

@@ -1,0 +1,96 @@
+
+								página: 1 
+
+ Listado Fuente: p2e7.LST
+ Programa Fuente en: p2e7.ASM
+ Fecha: Wed Sep 21 16:41:01 2022
+
+  Dir. Codigo maquina	 Linea 	 Codigo en lenguaje ensamble
+
+			      1		ORG 1000H
+ 1000 4E 55 4D 45 52 4F	      2	MSJ1	DB "NUMERO 1:"
+ 1006 20 31 3A
+ 1009 4E		      3	FIN1 	DB ?
+ 100A 4E 55 4D 45 52 4F	      4	MSJ2	DB "NUMERO 2:"
+ 1010 20 32 3A
+ 1013 4E		      5	FIN2	DB ?
+ 1014 52 45 53 55 4C 54	      6	MSJ3	DB "RESULTADO:"
+ 101A 41 44 4F 3A
+ 101E 52		      7	FIN3	DB ?
+ 101F 52		      8	NUM1	DB ?
+ 1020 52		      9	NUM2	DB ?
+ 1021 52		     10	RES	DB ?
+ 1022 31		     11	UNO	DB "1"
+			     12	
+			     13		ORG 2000H
+			     14		;PEDIR, GUARDAR Y MOSTRAR EL PRIMER NUM
+				ERO:
+ 2000 BB 00 10		     15		MOV BX, OFFSET MSJ1
+ 2003 B0 09		     16		MOV AL, OFFSET FIN1-OFFSET MSJ1
+ 2005 CD 07		     17		INT 7
+ 2007 BB 1F 10		     18		MOV BX, OFFSET NUM1
+ 200A CD 06		     19		INT 6
+ 200C B0 01		     20		MOV AL,1
+ 200E CD 07		     21		INT 7
+			     22	
+			     23		;PEDIR, GUARDAR Y MOSTRAR EL SEGUNDO NU
+				MERO:
+ 2010 BB 0A 10		     24		MOV BX, OFFSET MSJ2
+ 2013 B0 09		     25		MOV AL, OFFSET FIN2-OFFSET MSJ2
+ 2015 CD 07		     26		INT 7
+ 2017 BB 20 10		     27		MOV BX, OFFSET NUM2
+ 201A CD 06		     28		INT 6
+ 201C B0 01		     29		MOV AL,1
+ 201E CD 07		     30		INT 7
+			     31		
+			     32		;OBTENER EL NUMERO DECIMAL A PARTIR DEL
+				 CODIGO DEL CARACTER QUE REPRESENTA
+ 2020 8A 0E 1F 10	     33		MOV CL, NUM1
+ 2024 8A 2E 20 10	     34		MOV CH, NUM2
+ 2028 80 E9 30		     35		SUB CL,30H
+ 202B 80 ED 30		     36		SUB CH,30H
+			     37	
+			     38		;REALIZAR LA SUMA E IMPRIMIR EL RESULTA
+				DO, SEGUN SEA DE UNO O DOS DIGITOS
+ 202E 02 CD		     39		ADD CL, CH
+ 2030 BB 14 10		     40		MOV BX, OFFSET MSJ3
+ 2033 B0 0A		     41		MOV AL, OFFSET FIN3-OFFSET MSJ3
+ 2035 CD 07		     42		INT 7
+ 2037 80 F9 0A		     43		CMP CL,10
+ 203A 78 0A		     44		JS UN_DIGITO
+			     45		;EL NUMERO ES DE 2 DIGITOS (<18):
+			     46		;IMPRIMO LA DECENA (EL "1")
+ 203C BB 22 10		     47		MOV BX, OFFSET UNO
+ 203F B0 01		     48		MOV AL,1
+
+
+
+								página: 2 
+
+ 2041 CD 07		     49		INT 7
+ 2043 80 E9 0A		     50		SUB CL,10 ;OBTENGO LA UNIDAD
+			     51		;IMPRIMO LA UNIDAD:
+ 2046 88 0E 21 10	     52	UN_DIGITO:MOV RES, CL
+ 204A 80 06 21 10 30	     53		ADD RES,30H
+ 204F BB 21 10		     54		MOV BX, OFFSET RES
+ 2052 B0 01		     55		MOV AL,1
+ 2054 CD 07		     56		INT 7
+ 2056 F4		     57		HLT
+			     58		END
+
+
+ S I M B O L O S:
+
+ Nombre:	Tipo:		Valor:
+
+ MSJ1    	Mem. Byte	1000h
+ FIN1    	Mem. Byte	1009h
+ MSJ2    	Mem. Byte	100Ah
+ FIN2    	Mem. Byte	1013h
+ MSJ3    	Mem. Byte	1014h
+ FIN3    	Mem. Byte	101Eh
+ NUM1    	Mem. Byte	101Fh
+ NUM2    	Mem. Byte	1020h
+ RES     	Mem. Byte	1021h
+ UNO     	Mem. Byte	1022h
+ UN_DIGIT	Etiqueta	2046h

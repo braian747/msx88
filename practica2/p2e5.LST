@@ -1,0 +1,76 @@
+
+								página: 1 
+
+ Listado Fuente: p2e5.LST
+ Programa Fuente en: p2e5.ASM
+ Fecha: Sun Sep 18 13:46:44 2022
+
+  Dir. Codigo maquina	 Linea 	 Codigo en lenguaje ensamble
+
+			      1		ORG 1000H
+ 1000 49 4E 47 52 45 53	      2	MSJ 	DB "INGRESE UN NUMERO:"
+ 1006 45 20 55 4E 20 4E
+ 100C 55 4D 45 52 4F 3A
+ 1012 49		      3	FIN 	DB ?
+ 1013 43 41 52 41 43 54	      4	MSJ2	DB "CARACTER NO VALIDO"
+ 1019 45 52 20 4E 4F 20
+ 101F 56 41 4C 49 44 4F
+ 1025 43		      5	FIN2	DB ?
+			      6	
+			      7		ORG 1500H
+ 1500 43		      8	NUM 	DB ?
+			      9	
+			     10		ORG 3000H
+ 3000 B5 00		     11	ES_NUM:	MOV CH,00H
+ 3002 B0 39		     12		MOV AL,39H
+ 3004 3A 07		     13		CMP AL,[BX]
+ 3006 78 0A		     14		JS NO_VALIDO 		;SI EL CARACTER
+				 ES >39H(39H-CAR DA NEGATIVO) NO ES UN NUMERO
+ 3008 B0 30		     15		MOV AL, 30H
+ 300A 3A 07		     16		CMP AL,[BX] 		
+ 300C 74 02		     17		JZ VALIDO		;SI EL CARACTER
+				 ES =30H ES EL CERO(NUMERO VALIDO)
+ 300E 79 02		     18		JNS NO_VALIDO		;SI EL CARACTER
+				 ES >30H Y (30H-CAR DA NEGATIVO) NO ES UN NUMERO
+ 3010 B5 FF		     19	VALIDO:	MOV CH,0FFH
+ 3012 C3		     20	NO_VALIDO:RET
+			     21	
+			     22	
+			     23		ORG 2000H
+ 2000 BB 00 10		     24		MOV BX, OFFSET MSJ
+ 2003 B0 12		     25		MOV AL, OFFSET FIN-OFFSET MSJ
+ 2005 CD 07		     26		INT 7
+ 2007 BB 00 15		     27		MOV BX, OFFSET NUM
+ 200A CD 06		     28		INT 6
+ 200C B0 01		     29		MOV AL, 1
+ 200E CD 07		     30		INT 7
+ 2010 E8 00 30		     31		CALL ES_NUM
+ 2013 80 FD FF		     32		CMP CH,0FFH
+ 2016 74 07		     33		JZ FINAL			;SI EL 
+				CARACTER ES UN NUMERO NO MOSTRAR NADA
+ 2018 BB 13 10		     34		MOV BX, OFFSET MSJ2
+ 201B B0 12		     35		MOV AL, OFFSET FIN2-OFFSET MSJ2
+ 201D CD 07		     36		INT 7 				;SI EL 
+				CARACTER NO ES UN NUMERO IMPRIMIR EL MENSAJE
+ 201F CD 00		     37	FINAL:	INT 0
+			     38		END
+
+
+ S I M B O L O S:
+
+ Nombre:	Tipo:		Valor:
+
+ MSJ     	Mem. Byte	1000h
+ FIN     	Mem. Byte	1012h
+
+
+
+								página: 2 
+
+ MSJ2    	Mem. Byte	1013h
+ FIN2    	Mem. Byte	1025h
+ NUM     	Mem. Byte	1500h
+ ES_NUM  	Etiqueta	3000h
+ VALIDO  	Etiqueta	3010h
+ NO_VALID	Etiqueta	3012h
+ FINAL   	Etiqueta	201Fh

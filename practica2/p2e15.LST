@@ -1,0 +1,110 @@
+
+								página: 1 
+
+ Listado Fuente: p2e15.LST
+ Programa Fuente en: p2e15.ASM
+ Fecha: Thu Sep 29 13:31:07 2022
+
+  Dir. Codigo maquina	 Linea 	 Codigo en lenguaje ensamble
+
+			      1	PIC 	EQU 20H
+			      2	TIMER 	EQU 10H
+			      3	N_F10	EQU 10
+			      4	N_CLK	EQU 11
+			      5	
+			      6		ORG 40
+ 0028 00 30		      7	IP_F10	DW RUT_F10
+			      8		
+			      9		ORG 44
+ 002C 00 35		     10	IP_CLK	DW RUT_CLK
+			     11		
+			     12		ORG 1000H
+ 1000 36		     13	SEG	DB 036H
+ 1001 39		     14		DB 039H
+ 1002 39		     15	FIN	DB ?
+ 1003 49 4E 47 52 45 53	     16	MSJ	DB "INGRESE UN VALOR:"
+ 1009 45 20 55 4E 20 56
+ 100F 41 4C 4F 52 3A
+ 1014 49		     17	FIN_M	DB ?
+			     18	
+			     19		ORG 3000H
+ 3000 50		     20	RUT_F10:PUSH AX
+ 3001 B0 FC		     21		MOV AL, 11111100B
+ 3003 E6 21		     22		OUT PIC+1, AL ;IMR=11111100B
+ 3005 B0 20		     23		MOV AL, 20H
+ 3007 E6 20		     24		OUT PIC,AL
+ 3009 58		     25		POP AX
+ 300A CF		     26		IRET
+			     27		
+			     28		ORG 3500H
+ 3500 50		     29	RUT_CLK:PUSH AX
+ 3501 CD 07		     30		INT 7
+ 3503 FE 0E 01 10	     31		DEC SEG+1
+ 3507 80 3E 01 10 30	     32		CMP SEG+1, 30H
+ 350C 75 0B		     33		JNZ RESET
+ 350E CD 07		     34		INT 7
+ 3510 C6 06 01 10 39	     35		MOV SEG+1, 39H
+ 3515 FE 0E 00 10	     36		DEC SEG		
+ 3519 B0 00		     37	RESET: 	MOV AL,0
+ 351B E6 10		     38		OUT TIMER,AL
+ 351D B0 20		     39		MOV AL, 20H
+ 351F E6 20		     40		OUT PIC,AL
+ 3521 58		     41		POP AX
+ 3522 CF		     42		IRET
+			     43	
+			     44		ORG 2000H
+ 2000 FA		     45		CLI
+ 2001 B0 FE		     46		MOV AL, 11111110B
+ 2003 E6 21		     47		OUT PIC+1, AL ;IMR=11111110B ;PRIMERO S
+				OLO HABILITO LA INT F10
+ 2005 B0 0A		     48		MOV AL, N_F10
+ 2007 E6 24		     49		OUT PIC+4, AL ;INT0=10
+ 2009 B0 0B		     50		MOV AL, N_CLK
+ 200B E6 25		     51		OUT PIC+5, AL ;INT1=11
+ 200D B0 00		     52		MOV AL, 0
+
+
+
+								página: 2 
+
+ 200F E6 10		     53		OUT TIMER, AL ;CONT=0
+ 2011 B0 01		     54		MOV AL, 1
+ 2013 E6 11		     55		OUT TIMER+1,AL ;COMP=1
+ 2015 BB 03 10		     56		MOV BX, OFFSET MSJ
+ 2018 B0 11		     57		MOV AL, OFFSET FIN_M-OFFSET MSJ
+ 201A CD 07		     58		INT 7			;PARA IMPRIMIR 
+				EL MENSAJE AL USUARIO
+ 201C BB 00 10		     59		MOV BX, OFFSET SEG		;HABRUA
+				 QUE LEER EL VALOR INICIAL DEL CONTADOR (NO SE P
+				UEDE DE DOS DIGITOS)
+ 201F B0 02		     60		MOV AL, OFFSET FIN-OFFSET SEG 	;PARA M
+				OSTRAR LOS SEGUNDOS EN PANTALLA (BX EN [SEG] YA 
+				ESTA CONFIGURADO)
+ 2021 FB		     61		STI
+ 2022 80 3E 00 10 2F	     62	LAZO:	CMP SEG, 2FH ;2FH=CARACTER ANTERIOR AL 
+				0 EN ASCII
+ 2027 74 03		     63		JZ TERMINAR
+ 2029 E9 22 20		     64		JMP LAZO
+ 202C F4		     65	TERMINAR:HLT
+			     66		END
+
+
+ S I M B O L O S:
+
+ Nombre:	Tipo:		Valor:
+
+ PIC     	Constante	  20h
+ TIMER   	Constante	  10h
+ N_F10   	Constante	   Ah
+ N_CLK   	Constante	   Bh
+ IP_F10  	Mem. Word	  28h	No usado
+ IP_CLK  	Mem. Word	  2Ch	No usado
+ SEG     	Mem. Byte	1000h
+ FIN     	Mem. Byte	1002h
+ MSJ     	Mem. Byte	1003h
+ FIN_M   	Mem. Byte	1014h
+ RUT_F10 	Etiqueta	3000h
+ RUT_CLK 	Etiqueta	3500h
+ RESET   	Etiqueta	3519h
+ LAZO    	Etiqueta	2022h
+ TERMINAR	Etiqueta	202Ch

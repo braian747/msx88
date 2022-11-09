@@ -1,0 +1,138 @@
+
+								página: 1 
+
+ Listado Fuente: p2e6.LST
+ Programa Fuente en: p2e6.ASM
+ Fecha: Sun Sep 18 15:40:28 2022
+
+  Dir. Codigo maquina	 Linea 	 Codigo en lenguaje ensamble
+
+			      1		ORG 1000H
+ 1000 43 45 52 4F 3A	      2	CERO 	DB "CERO:"
+ 1005 55 4E 4F		      3	UNO	DB "UNO"
+ 1008 44 4F 53		      4	DOS	DB "DOS"
+ 100B 54 52 45 53	      5	TRES	DB "TRES"
+			      6	
+			      7	;... 	... ...  	
+			      8	
+ 100F 4E 55 45 56 45	      9	NUEVE	DB "NUEVE"
+			     10	
+			     11		ORG 1500H
+ 1500 49 4E 47 52 45 53	     12	MSJ1	DB "INGRESE UN NUMERO DE UN DIGITO"
+ 1506 45 20 55 4E 20 4E
+ 150C 55 4D 45 52 4F 20
+ 1512 44 45 20 55 4E 20
+ 1518 44 49 47 49 54 4F
+ 151E 49		     13	F_MSJ1	DB ?
+ 151F 56 55 45 4C 56 41	     14	MSJ2	DB "VUELVA A INGRESAR EL NUMERO CERO PA
+				RA FINALIZAR LA EJECUCION"
+ 1525 20 41 20 49 4E 47
+ 152B 52 45 53 41 52 20
+ 1531 45 4C 20 4E 55 4D
+ 1537 45 52 4F 20 43 45
+ 153D 52 4F 20 50 41 52
+ 1543 41 20 46 49 4E 41
+ 1549 4C 49 5A 41 52 20
+ 154F 4C 41 20 45 4A 45
+ 1555 43 55 43 49 4F 4E
+ 155B 56		     15	F_MSJ2	DB ?
+ 155C 56		     16	NUM	DB ?
+			     17	
+			     18		ORG 3000H
+ 3000 80 3E 5C 15 30	     19	IMPRIMIR:CMP NUM,30H
+ 3005 74 1F		     20		JZ IMP0
+ 3007 80 3E 5C 15 31	     21		CMP NUM,31H
+ 300C 74 22		     22		JZ IMP1
+ 300E 80 3E 5C 15 32	     23		CMP NUM,32H
+ 3013 74 25		     24		JZ IMP2
+ 3015 80 3E 5C 15 33	     25		CMP NUM,33H
+ 301A 74 28		     26		JZ IMP3
+			     27	;	... ...
+ 301C 80 3E 5C 15 39	     28		CMP NUM, 39H
+ 3021 74 2B		     29		JZ IMP9
+ 3023 E9 55 30		     30		JMP FIN
+			     31	
+ 3026 BB 00 10		     32	IMP0:	MOV BX, OFFSET CERO
+ 3029 B0 04		     33		MOV AL, 4
+ 302B CD 07		     34		INT 7
+ 302D E9 55 30		     35		JMP FIN
+			     36	
+ 3030 BB 05 10		     37	IMP1:	MOV BX, OFFSET UNO
+ 3033 B0 03		     38		MOV AL, 3
+ 3035 CD 07		     39		INT 7
+ 3037 E9 55 30		     40		JMP FIN	
+			     41	
+
+
+
+								página: 2 
+
+ 303A BB 08 10		     42	IMP2:	MOV BX, OFFSET DOS
+ 303D B0 03		     43		MOV AL, 3
+ 303F CD 07		     44		INT 7
+ 3041 E9 55 30		     45		JMP FIN
+			     46	
+ 3044 BB 0B 10		     47	IMP3:	MOV BX, OFFSET TRES
+ 3047 B0 04		     48		MOV AL, 4
+ 3049 CD 07		     49		INT 7
+ 304B E9 55 30		     50		JMP FIN
+			     51	
+			     52	;...	... ...
+			     53	
+			     54	
+ 304E BB 0F 10		     55	IMP9:	MOV BX, OFFSET NUEVE
+ 3051 B0 05		     56		MOV AL, 5
+ 3053 CD 07		     57		INT 7
+			     58	
+ 3055 C3		     59	FIN:	RET	
+			     60	
+			     61		ORG 2000H
+ 2000 BB 00 15		     62	LOOP:	MOV BX, OFFSET MSJ1
+ 2003 B0 1E		     63		MOV AL, OFFSET F_MSJ1-OFFSET MSJ1
+ 2005 CD 07		     64		INT 7
+ 2007 BB 5C 15		     65		MOV BX, OFFSET NUM
+ 200A CD 06		     66		INT 6
+ 200C E8 00 30		     67	NO_SALIR:CALL IMPRIMIR
+ 200F 80 3E 5C 15 30	     68		CMP NUM,30H
+ 2014 74 03		     69		JZ CONFIRMAR
+ 2016 E9 00 20		     70		JMP LOOP
+ 2019 BB 1F 15		     71	CONFIRMAR:MOV BX, OFFSET MSJ2
+ 201C B0 3C		     72		MOV AL, OFFSET F_MSJ2-OFFSET MSJ2
+ 201E CD 07		     73		INT 7
+ 2020 BB 5C 15		     74		MOV BX, OFFSET NUM
+ 2023 CD 06		     75		INT 6
+ 2025 80 3E 5C 15 30	     76		CMP NUM,30H
+ 202A 75 E0		     77		JNZ NO_SALIR
+ 202C F4		     78		HLT
+			     79		END
+
+
+ S I M B O L O S:
+
+ Nombre:	Tipo:		Valor:
+
+ CERO    	Mem. Byte	1000h
+ UNO     	Mem. Byte	1005h
+ DOS     	Mem. Byte	1008h
+ TRES    	Mem. Byte	100Bh
+ NUEVE   	Mem. Byte	100Fh
+ MSJ1    	Mem. Byte	1500h
+ F_MSJ1  	Mem. Byte	151Eh
+ MSJ2    	Mem. Byte	151Fh
+ F_MSJ2  	Mem. Byte	155Bh
+ NUM     	Mem. Byte	155Ch
+ IMPRIMIR	Etiqueta	3000h
+ IMP0    	Etiqueta	3026h
+ IMP1    	Etiqueta	3030h
+ IMP2    	Etiqueta	303Ah
+ IMP3    	Etiqueta	3044h
+ IMP9    	Etiqueta	304Eh
+ FIN     	Etiqueta	3055h
+
+
+
+								página: 3 
+
+ LOOP    	Etiqueta	2000h
+ NO_SALIR	Etiqueta	200Ch
+ CONFIRMA	Etiqueta	2019h

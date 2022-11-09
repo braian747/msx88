@@ -1,0 +1,61 @@
+
+								página: 1 
+
+ Listado Fuente: p2e11.LST
+ Programa Fuente en: p2e11.ASM
+ Fecha: Wed Sep 28 15:49:36 2022
+
+  Dir. Codigo maquina	 Linea 	 Codigo en lenguaje ensamble
+
+			      1	PIC	EQU 20H
+			      2	F10	EQU 10
+			      3		
+			      4		ORG 40
+ 0028 00 30		      5	DIR_F10	DW RUT_F10
+			      6	
+			      7		ORG 1000H
+ 1000 41		      8	LETRA 	DB 41H
+			      9	
+			     10	
+			     11		ORG 3000H
+ 3000 50		     12	RUT_F10:PUSH AX
+ 3001 53		     13		PUSH BX
+ 3002 88 26 00 10	     14		MOV LETRA, AH
+ 3006 BB 00 10		     15		MOV BX, OFFSET LETRA
+ 3009 B0 01		     16		MOV AL, 1
+ 300B CD 07		     17		INT 7
+ 300D B0 20		     18		MOV AL, 20H
+ 300F E6 20		     19		OUT PIC, AL
+ 3011 5B		     20		POP BX
+ 3012 58		     21		POP AX
+ 3013 CF		     22		IRET
+			     23	
+			     24		ORG 2000H
+ 2000 FA		     25		CLI
+ 2001 B0 FE		     26		MOV AL, 11111110B
+ 2003 E6 21		     27		OUT PIC+1,AL
+ 2005 B0 0A		     28		MOV AL, F10
+ 2007 E6 24		     29		OUT PIC+4,AL
+ 2009 FB		     30		STI
+ 200A 8A 26 00 10	     31		MOV AH, LETRA
+ 200E 80 FC 5B		     32	LOOP:	CMP AH, 5BH
+ 2011 75 05		     33		JNZ SIG
+ 2013 B4 41		     34		MOV AH, 41H
+ 2015 E9 0E 20		     35		JMP LOOP
+ 2018 FE C4		     36	SIG:	INC AH
+ 201A E9 0E 20		     37		JMP LOOP
+ 201D F4		     38		HLT
+			     39		END
+
+
+ S I M B O L O S:
+
+ Nombre:	Tipo:		Valor:
+
+ PIC     	Constante	  20h
+ F10     	Constante	   Ah
+ DIR_F10 	Mem. Word	  28h	No usado
+ LETRA   	Mem. Byte	1000h
+ RUT_F10 	Etiqueta	3000h
+ LOOP    	Etiqueta	200Eh
+ SIG     	Etiqueta	2018h
